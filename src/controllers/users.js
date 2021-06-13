@@ -1,5 +1,6 @@
 
 const express = require("express");
+const User = require("../models/users");
 
 /**
  * 
@@ -9,21 +10,17 @@ const express = require("express");
 
 
 
-const getAllUsers = (req, res)=> {
-    const users = [
-        {
-            id: 1,
-            name: "Fernando"
-        },
-        {
-            id: 2,
-            name: "Marta"
-        }
-    ]
+const getAllUsers = async (req, res, next)=> {
 
-    throw new Error("Ocurrio un errror al obtener el usuario")
-    res.json(users);
-    
+    try {
+        const users = await User.find();
+        res.json(users);
+        
+    } catch (err) {
+        next(err);
+    }
+
+   
 };
 
 
@@ -34,16 +31,22 @@ const getAllUsers = (req, res)=> {
  */
 
 
-const createUser = (req, res)=> {
+const createUser = async (req, res, next)=> {
 
-    const user = req.body;
-    user.id = 31651
-    const result = {
-        message: "User created",
-        user
-    }
-    res.status(201).json(result);
+    try {
+        let user = req.body;
+        user = await User.create(user);
     
+        user.id = 31651
+        const result = {
+            message: "User created",
+            user
+        }
+        res.status(201).json(result);
+        
+    } catch (err) {
+        next(err);        
+    }    
   };
 
   /**
@@ -52,16 +55,23 @@ const createUser = (req, res)=> {
  * @param {express.Response} res 
  */
 
-const updateUser = (req, res)=> {
-
-    const {id} = req.params;    
-    const user = req.body;
-    user.id = id;
-    const result = {
-        message: "User updated",
-        user
+const updateUser = async (req, res, next)=> {
+    try {
+        const {id} = req.params;    
+        let user = req.body;
+        user._id = id;
+        await User.updateOne(user);
+        user.id = id;
+        const result = {
+            message: "User updated",
+            user
+        }
+      res.json(result); //http code 200 no hace falta ponerlo
+        
+    } catch (err) {
+        next(err);
     }
-  res.json(result); //http code 200 no hace falta ponerlo
+
 };
 
 /**
@@ -83,13 +93,20 @@ const updatePartialUser = (req, res)=> {
  * @param {express.Response} res 
  */
 
-const deleteUser = (req, res)=> {
-
-    const {id} = req.params;
-    const result= {
-        message: `User with id ${id} deleted`
+const deleteUser = async (req, res, next)=> {
+    try {
+        const {id} = req.params;
+        const user = await User.findById(id);
+        user.remove();
+    
+        const result= {
+            message: `User with id ${id} deleted`
+        }
+        res.json(result);
+        
+    } catch (err) {
+        next(err);        
     }
-  res.json(result)
 };
 
 module.exports={
