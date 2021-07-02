@@ -3,6 +3,7 @@
   "info": {
     "title": "API Rest base repo",
     "description": "This is an API base to start new projects",
+    "version": "1.0.0",
     "contact": {
       "email": "you@your-company.com"
     },
