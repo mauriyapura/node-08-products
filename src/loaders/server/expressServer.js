@@ -11,8 +11,8 @@ class ExpressServer {
     constructor(){
         this.app = express()
         this.port = config.port;
-        this.basePathUser = `${config.api.prefix}/users`;
-        
+        this.basePathAuth = `${config.api.prefix}/auth`;
+        this.basePathUser = `${config.api.prefix}/users`;        
         this._middlewares();
         this._swaggerConfig();
         
@@ -39,7 +39,9 @@ class ExpressServer {
             res.status(200).json({prueba: "gitfloww"});
         });
 
+        this.app.use(this.basePathAuth, require("../../routes/auth"));
         this.app.use(this.basePathUser, require("../../routes/users"));
+
     }
 
     _notFound(){
@@ -55,14 +57,16 @@ class ExpressServer {
     _errorHandler(){
         this.app.use((err,req,res,next)=>{
             const code = err.code || 500;
-            res.status(code);
+            //res.status(code);
+
             const body = {
                 error: {
                     code,
-                    message: err.message
+                    message: err.message,
+                    detail: err.data
                 }
             }
-            res.json(body);
+            res.status(code).json(body);
         });
     }
 
