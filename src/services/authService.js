@@ -11,19 +11,19 @@ const login = async(email, password)=>{
         //validacion de email
         const user = await userService.findByEmail(email);
         if(!user){
-            throw new AppError("Authentication failed! Email or Password incorrect", 400);
+            throw new AppError("Authentication failed! Email or Password incorrect", 401);
         }
 
         //validacion de user enabled
         if(!user.enable){
-            throw new AppError("Authentication failed! User Disabled", 400);
+            throw new AppError("Authentication failed! User Disabled", 403);
 
         }
 
         //validacion de password
         const validPassword = await bcrypt.compare(password, user.password);
         if(!validPassword){
-            throw new AppError("Authentication failed! Email or Password incorrect", 400);
+            throw new AppError("Authentication failed! Email or Password incorrect", 401);
         }        
 
         //Generar jwt
