@@ -3,14 +3,14 @@
   "info": {
     "title": "API Rest base repo",
     "description": "This is an API base to start new projects",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "contact": {
       "email": "you@your-company.com"
     },
     "license": {
       "name": "Apache 2.0",
       "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
-    }    
+    }
   },
   "servers": [
     {
@@ -19,7 +19,7 @@
     },
     {
       "url": "https://nodefv-06-restserver.herokuapp.com/api/v1",
-      "description":"Produccion"
+      "description": "Produccion"
     }
   ],
   "tags": [
@@ -35,9 +35,7 @@
   "paths": {
     "/inventory": {
       "get": {
-        "tags": [
-          "developers"
-        ],
+        "tags": ["developers"],
         "summary": "searches inventory",
         "description": "By passing in the appropriate options, you can search for\navailable inventory in the system\n",
         "operationId": "searchInventory",
@@ -101,9 +99,7 @@
         }
       },
       "post": {
-        "tags": [
-          "admins"
-        ],
+        "tags": ["admins"],
         "summary": "adds an inventory item",
         "description": "Adds an item to the system",
         "operationId": "addInventory",
@@ -134,12 +130,7 @@
   "components": {
     "schemas": {
       "InventoryItem": {
-        "required": [
-          "id",
-          "manufacturer",
-          "name",
-          "releaseDate"
-        ],
+        "required": ["id", "manufacturer", "name", "releaseDate"],
         "type": "object",
         "properties": {
           "id": {
@@ -162,9 +153,7 @@
         }
       },
       "Manufacturer": {
-        "required": [
-          "name"
-        ],
+        "required": ["name"],
         "type": "object",
         "properties": {
           "name": {
